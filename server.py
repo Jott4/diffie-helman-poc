@@ -12,7 +12,6 @@ class Server:
         print(f"Servidor iniciado em {host}:{port}")
 
     def handle_client(self, client_socket, addr):
-        # Envia mensagem inicial com tipo de criptografia
         initial_message = {
             "encryption_type": "DiffieHellman"
         }
@@ -24,12 +23,11 @@ class Server:
                 if not message:
                     break
                 
-                # Tenta ler a mensagem (servidor não consegue decifrar)
                 data = json.loads(message)
                 print(f"\nServidor recebeu mensagem cifrada: {data['content']}")
-                print(f"Servidor não pode decifrar pois não tem acesso à chave compartilhada!")
+                print(f"Valores públicos -> Base: {data['base']}, Primo: {data['prime']}")
+                print("Servidor não pode decifrar pois não tem acesso à chave privada!")
                 
-                # Encaminha mensagem para outros clientes
                 for client in self.clients:
                     if client != client_socket:
                         client.send(message.encode())
